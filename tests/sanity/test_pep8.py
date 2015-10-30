@@ -3,8 +3,16 @@ from unittest import TestCase
 
 
 class PEP8TestCase(TestCase):
+    CHECKED_DIRS = ['tests', 'quipit']
+    IGNORED_RULES = ['E501']
+
     def test_pep8(self):
-        checked_dirs = ['tests', 'quipit']
-        pep8_command = ['pep8'] + checked_dirs
-        if call(pep8_command):
+        pep8_command = 'pep8 {} {}'.format(self._ignore_rules(), self._check_dirs())
+        if call(pep8_command, shell=True):
             raise Exception("PEP8 Failed. Check stdout for more information")
+
+    def _check_dirs(self):
+        return ' '.join(self.CHECKED_DIRS)
+
+    def _ignore_rules(self):
+        return '--ignore={}'.format(','.join(self.IGNORED_RULES))

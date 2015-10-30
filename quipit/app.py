@@ -14,12 +14,19 @@ class Quip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(length=400))
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User', backref=db.backref('quips', lazy='dynamic'))
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    author = db.relationship('User',
+                             backref=db.backref('quips', lazy='dynamic'),
+                             foreign_keys=[author_id])
 
-    def __init__(self, text, user=None):
+    source_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    source = db.relationship('User',
+                             backref=db.backref('quotes', lazy='dynamic'),
+                             foreign_keys=[source_id])
+
+    def __init__(self, text, author=None):
         self.text = text
-        self.user = user
+        self.author = author
 
     def _describe(self):
         return repr(ellipsize(self.text, length=40))
