@@ -1,4 +1,4 @@
-from quipit.app import db
+from quipit.db import db
 from quipit.utils import ellipsize
 
 
@@ -6,7 +6,7 @@ class Quip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(length=400))
 
-    circle_id = db.Column(db.Integer, db.ForeignKey('circle.id'), nullable=False)
+    circle_id = db.Column(db.Integer, db.ForeignKey('circle.id'))
     circle = db.relationship('Circle',
                              backref=db.backref('quips', lazy='dynamic'))
 
@@ -20,10 +20,11 @@ class Quip(db.Model):
                              backref=db.backref('quotes', lazy='dynamic'),
                              foreign_keys=[source_id])
 
-    def __init__(self, text, author, circle):
+    def __init__(self, text, author, circle=None, source=None):
         self.text = text
         self.author = author
         self.circle = circle
+        self.source = source
 
     def __repr__(self):
         quip_text = repr(ellipsize(self.text))
@@ -46,6 +47,10 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User {} ({})>'.format(repr(self.name), self.username)
+
+    @classmethod
+    def find_by_username(self, username):
+        return User.query.filter_by(username=username).first()
 
 
 class Circle(db.Model):

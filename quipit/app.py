@@ -1,13 +1,16 @@
 from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
 
+from quipit.api import api
+from quipit.db import db
 from quipit.middleware import limit_size, accept_content
+from quipit.resources import QuipsResource
 from quipit.utils import ellipsize
 
 app = Flask(__name__)
 app.config.from_object('config')
 
-db = SQLAlchemy(app)
+db.init_app(app)
+api.init_app(app)
 
 
 @app.route('/media/upload', methods=['POST'])

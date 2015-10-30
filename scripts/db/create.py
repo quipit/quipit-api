@@ -1,3 +1,5 @@
-from quipit.app import db
+from quipit.app import app
+from quipit.db import db
 
-db.create_all()
+with app.app_context():
+    db.create_all()

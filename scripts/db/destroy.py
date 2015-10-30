@@ -1,3 +1,5 @@
-from quipit.app import db
+from quipit.app import app
+from quipit.db import db
 
-db.drop_all()
+with app.app_context():
+    db.drop_all()

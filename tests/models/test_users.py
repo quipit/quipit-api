@@ -5,6 +5,16 @@ from tests.test_case import DBTestCase
 
 
 class UserTestCase(DBTestCase):
+    def test_users_can_be_found_by_username(self):
+        user = User('Jonathan Como', 'jcomo')
+        other_user = User('Peter Como', 'pcomo')
+
+        db.session.add(user)
+        db.session.add(other_user)
+        db.session.commit()
+
+        self.assertEqual(user, User.find_by_username(user.username))
+
     def test_each_user_has_own_quips(self):
         circle = Circle('SF Crew')
 
