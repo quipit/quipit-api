@@ -1,4 +1,5 @@
-from quipit.app import db, Quip, User
+from quipit.app import db
+from quipit.models import Quip, User
 
 from tests.test_case import DBTestCase
 
