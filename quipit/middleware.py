@@ -1,8 +1,7 @@
 import re
 from functools import wraps
 
-# TODO: instead of using abort, use an exception
-from flask import request, abort
+from flask import request
 from werkzeug import exceptions
 
 
