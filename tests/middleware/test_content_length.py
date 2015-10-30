@@ -28,4 +28,3 @@ class MaxContentLengthTestCase(TestCase):
         with patch('quipit.middleware.request') as req:
             req.content_length = 99
             self.assertEqual('OK', route())
-

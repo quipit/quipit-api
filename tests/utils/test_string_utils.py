@@ -13,4 +13,3 @@ class StringUtilsTestCase(TestCase):
 
     def test_ellipsize_cuts_off_string_longer_than_length(self):
         self.assertEqual('Str...', ellipsize('String', 3))
-

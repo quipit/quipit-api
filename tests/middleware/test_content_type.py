@@ -28,4 +28,3 @@ class AllowedContentTypesTestCase(TestCase):
         with patch('quipit.middleware.request') as req:
             req.content_type = 'image/jpeg'
             self.assertEqual('OK', route())
-

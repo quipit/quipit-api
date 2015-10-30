@@ -1,17 +1,12 @@
-from unittest import TestCase
-
 from quipit.app import db, Quip, User
 
+from tests.test_case import DBTestCase
 
-class QuipTestCase(TestCase):
+
+class QuipTestCase(DBTestCase):
     def setUp(self):
         super(QuipTestCase, self).setUp()
-        db.create_all()
         self.user = User('Jonathan Como', 'jcomo')
-
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
 
     def test_it_can_have_an_author(self):
         quip = Quip("I'm not on trial here!", self.user)

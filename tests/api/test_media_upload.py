@@ -7,4 +7,3 @@ class UploadMediaTestCase(TestCase):
 
     def test_it_rejects_uploads_with_unsupported_media_types(self):
         pass
-

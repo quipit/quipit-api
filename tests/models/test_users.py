@@ -1,18 +1,9 @@
-from unittest import TestCase
-
 from quipit.app import db, Quip, User
 
+from tests.test_case import DBTestCase
 
-class UserTestCase(TestCase):
-    def setUp(self):
-        super(UserTestCase, self).setUp()
-        db.create_all()
-        self.user = User('Jonathan Como', 'jcomo')
 
-    def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-
+class UserTestCase(DBTestCase):
     def test_user_can_retrieve_quips(self):
         user = User('Jonathan Como', 'jcomo')
         user_quip = Quip('This is some thangs', user)
@@ -23,4 +14,3 @@ class UserTestCase(TestCase):
         db.session.commit()
 
         self.assertEqual([user_quip], user.quips.all())
-

@@ -17,7 +17,6 @@ class Quip(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', backref=db.backref('quips', lazy='dynamic'))
 
-
     def __init__(self, text, user=None):
         self.text = text
         self.user = user
