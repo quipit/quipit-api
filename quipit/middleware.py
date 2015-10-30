@@ -1,3 +1,8 @@
+import re
+from functools import wraps
+
+# TODO: instead of using abort, use an exception
+from flask import request, abort
 from werkzeug import exceptions
 
 
@@ -16,7 +21,7 @@ def accept_content(content_regex):
     def _accept_content(f):
         def __accept_content(*args, **kwargs):
             if not re.match(content_regex, request.content_type):
-                abort(415)
+                raise exceptions.UnsupportedMediaType
 
             return f(*args, **kwargs)
         return __accept_content

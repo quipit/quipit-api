@@ -3,7 +3,7 @@ from mock import patch
 
 from werkzeug import exceptions
 
-from quipit.app import limit_size
+from quipit.middleware import limit_size
 
 
 class MaxContentLengthTestCase(TestCase):
@@ -14,7 +14,7 @@ class MaxContentLengthTestCase(TestCase):
         def route():
             return 'OK'
 
-        with patch('quipit.app.request') as req:
+        with patch('quipit.middleware.request') as req:
             req.content_length = 101
             with self.assertRaises(exceptions.RequestEntityTooLarge):
                 route()
@@ -25,7 +25,7 @@ class MaxContentLengthTestCase(TestCase):
         def route():
             return 'OK'
 
-        with patch('quipit.app.request') as req:
+        with patch('quipit.middleware.request') as req:
             req.content_length = 99
             self.assertEqual('OK', route())
 

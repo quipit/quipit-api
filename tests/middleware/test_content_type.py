@@ -3,7 +3,7 @@ from mock import patch
 
 from werkzeug import exceptions
 
-from quipit.app import accept_content
+from quipit.middleware import accept_content
 
 
 class AllowedContentTypesTestCase(TestCase):
@@ -14,7 +14,7 @@ class AllowedContentTypesTestCase(TestCase):
         def route():
             return 'OK'
 
-        with patch('quipit.app.request') as req:
+        with patch('quipit.middleware.request') as req:
             req.content_type = 'image/png'
             with self.assertRaises(exceptions.UnsupportedMediaType):
                 route()
@@ -25,7 +25,7 @@ class AllowedContentTypesTestCase(TestCase):
         def route():
             return 'OK'
 
-        with patch('quipit.app.request') as req:
+        with patch('quipit.middleware.request') as req:
             req.content_type = 'image/jpeg'
             self.assertEqual('OK', route())
 

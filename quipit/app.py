@@ -1,8 +1,7 @@
-import re
-from functools import wraps
-
-from flask import Flask, request, abort
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+
+from quipit.middleware import limit_size, accept_content
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
