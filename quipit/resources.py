@@ -22,18 +22,13 @@ class QuipsResource(AuthenticatedResource):
         text = args['text']
         circle_ids = args['circle_ids']
 
-        if not circle_ids:
-            # create a quip with no circle
-            quip = Quip(text, user)
-            db.session.add(quip)
-        else:
-            # Need a method on quip to create for circles (probably a service)
-            circles = Circle.query.filter(Circle.id in args['circle_ids']).all()
+        quip = Quip(text, user)
+        if circle_ids:
+            circles = user.circles.filter(Circle.id.in_(circle_ids)).all()
             for circle in circles:
-                quip = Quip(text, user)
-                quip.circle_id = circle
-                db.session.add(quip)
+                quip.add_to_circle(circle)
 
+        db.session.add(quip)
         db.session.commit()
 
-        return {'added': len(circles)}
+        return {'added': count}

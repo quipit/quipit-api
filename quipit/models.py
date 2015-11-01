@@ -2,13 +2,24 @@ from quipit.db import db
 from quipit.utils import ellipsize
 
 
+users_circles = db.Table('users_circles',
+                         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                         db.Column('circle_id', db.Integer, db.ForeignKey('circle.id')))
+
+
+quips_circles = db.Table('quips_circles',
+                         db.Column('quip_id', db.Integer, db.ForeignKey('quip.id')),
+                         db.Column('circle_id', db.Integer, db.ForeignKey('circle.id')))
+
+
 class Quip(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(length=400))
 
-    circle_id = db.Column(db.Integer, db.ForeignKey('circle.id'))
-    circle = db.relationship('Circle',
-                             backref=db.backref('quips', lazy='dynamic'))
+    circles = db.relationship('Circle',
+                              secondary=quips_circles,
+                              lazy='dynamic',
+                              backref=db.backref('quips', lazy='dynamic'))
 
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     author = db.relationship('User',
@@ -30,10 +41,8 @@ class Quip(db.Model):
         quip_text = repr(ellipsize(self.text))
         return '<Quip {}>'.format(quip_text)
 
-
-users_circles = db.Table('users_circles',
-                         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                         db.Column('circle_id', db.Integer, db.ForeignKey('circle.id')))
+    def add_to_circle(self, circle):
+        self.circles.append(circle)
 
 
 class User(db.Model):
@@ -64,5 +73,16 @@ class Circle(db.Model):
     def __init__(self, name):
         self.name = name
 
+    @property
+    def quip_count(self):
+        return self.quips.count()
+
+    @property
+    def member_count(self):
+        return self.members.count()
+
     def add_member(self, user):
         self.members.append(user)
+
+    def add_quip(self, quip):
+        self.quips.append(quip)
