@@ -31,4 +31,4 @@ class QuipsResource(AuthenticatedResource):
         db.session.add(quip)
         db.session.commit()
 
-        return {'added': count}
+        return {'thangs': True}
