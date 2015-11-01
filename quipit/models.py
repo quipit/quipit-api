@@ -31,10 +31,9 @@ class Quip(db.Model):
                              backref=db.backref('quotes', lazy='dynamic'),
                              foreign_keys=[source_id])
 
-    def __init__(self, text, author, circle=None, source=None):
+    def __init__(self, text, author, source=None):
         self.text = text
         self.author = author
-        self.circle = circle
         self.source = source
 
     def __repr__(self):

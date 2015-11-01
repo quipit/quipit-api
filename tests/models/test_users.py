@@ -16,13 +16,11 @@ class UserTestCase(DBTestCase):
         self.assertEqual(user, User.find_by_username(user.username))
 
     def test_each_user_has_own_quips(self):
-        circle = Circle('SF Crew')
-
         user = User('Jonathan Como', 'jcomo')
-        user_quip = Quip('This is some thangs', user, circle)
+        user_quip = Quip('This is some thangs', user)
 
         other_user = User('Peter Como', 'pcomo')
-        other_user_quip = Quip('This is none thangs', other_user, circle)
+        other_user_quip = Quip('This is none thangs', other_user)
 
         db.session.add(user_quip)
         db.session.add(other_user_quip)
