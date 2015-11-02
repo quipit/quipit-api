@@ -1,14 +1,39 @@
 task :default => :test
 
+VENV = "env"
+
+def venv(command)
+    sh "env #{command}"
+end
+
+namespace :build do
+    desc "Initialize the environment"
+    task :init do
+        unless Dir.exists? VENV
+            sh "virtualenv -p python2.7 #{VENV}"
+        end
+    end
+
+    desc "Build the environment for production"
+    task :prod => :init do
+        venv "pip install -U -r requirements.txt"
+    end
+
+    desc "Build the environment for testing"
+    task :test => :init do
+        venv "pip install -U -r requirements.txt -r requirements-test.txt"
+    end
+end
+
 namespace :db do
     desc "Create the database tables"
     task :create do
-        sh "env python scripts/db/create.py"
+        venv "python scripts/db/create.py"
     end
 
     desc "Destroy the database"
     task :destroy do
-        sh "env python scripts/db/destroy.py"
+        venv "python scripts/db/destroy.py"
     end
 
     desc "Recreate the database"
@@ -17,7 +42,7 @@ end
 
 desc "Run tests"
 task :test do
-    sh "env py.test"
+    venv "py.test"
 end
 
 desc "Clean temp and build files"

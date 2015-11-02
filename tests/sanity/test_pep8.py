@@ -7,7 +7,7 @@ class PEP8TestCase(TestCase):
     IGNORED_RULES = ['E501']
 
     def test_pep8(self):
-        pep8_command = 'pep8 {} {}'.format(self._ignore_rules(), self._check_dirs())
+        pep8_command = 'env pep8 {} {}'.format(self._ignore_rules(), self._check_dirs())
         if call(pep8_command, shell=True):
             raise Exception("PEP8 Failed. Check stdout for more information")
 

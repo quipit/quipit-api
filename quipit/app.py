@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 
 @app.route('/media/upload', methods=['POST'])
 @accept_content(r'^image/(jpeg|jpg|png|gif)')
-@limit_size(10 * 1024**2)
+@limit_size(10 * 1024 ** 2)
 def upload():
     data = request.get_data()
     with open('data.jpg', 'wb') as f:
